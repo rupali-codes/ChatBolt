@@ -4,7 +4,7 @@ const verify = require('../authentication/verify')
 const router = new express.Router()
 
 router.get('/', (req, res) => {
-	res.send("Hello World!")
+	res.render('index')
 })
 
 //creating user
