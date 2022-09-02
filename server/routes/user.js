@@ -7,6 +7,18 @@ router.get('/', (req, res) => {
 	res.render('index')
 })
 
+router.get('/signup', (req, res) => {
+	res.render('signup')
+})
+
+router.get('/signin', (req, res) => {
+	res.render('signin')
+})
+
+router.get('/user/chats', verify, (req, res) => {
+	res.render('chats')
+})
+
 //creating user
 router.post('/user/signup', async (req, res) => {
 	try {
@@ -14,10 +26,9 @@ router.post('/user/signup', async (req, res) => {
 		const token = await user.generateJwtToken()
 
 		await user.save()
-		res.status(200).send({
-			msg: "new user account created",
-			token
-		})
+		res.cookie("jwt", token)
+		res.status(200)
+		res.redirect('chats')
 	} catch(err) {
 		res.status(400).send({
 			msg: "unable to create account",
@@ -33,10 +44,9 @@ router.post('/user/signin', async (req, res) => {
 
 		if(!user) res.status(404).send({msg: "user not found"})
 
-		res.status(200).send({
-			msg: "logged in",
-			token
-		})
+		res.cookie("jwt", token)
+		res.status(200)
+		res.redirect('chats')
 	} catch (err) {
 		res.status(400).send({
 			msg: "user not found",

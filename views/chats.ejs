@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include('partials/links.ejs') %>
+	<title>rups-chat-app</title>
+</head>
+<body>
+	<!-- <%- include('partials/nav.ejs') %> -->
+	
+	<section class="">
+		<div class="flex md:flex-row flex-col h-screen">	
+			<div class="w-1/5 px-3 m-4" id="sidebar">
+				
+			</div>
+			<div class="flex flex-col w-4/5 bg-grey-100">
+				<div id="friend__profile">
+					
+				</div>
+				<div class="scroll-auto m-4 mt-5" id="chat__messages">
+					
+					<!-- <br> -->
+					
+				</div>
+				<div class="message__form object-bottom">
+						 <form class="flex w-3/5 md:justify-center justify-center items-center pb-4 fixed bottom-0" id="message__form">
+					        <div class="relative mr-4 lg:w-full xl:w-1/2 w-2/4">
+					   
+					          <input type="text" name="message" class="w-full bg-gray-100 bg-opacity-50 border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out rounded-full" placeholder="Type a message..." required autocomplete="off" id="message__input">
+					        </div>
+					        <button class="inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 text-sm rounded-full" id="send__message__btn" type="submit">send</button>
+						</form>
+				</div>
+			</div>
+			<div class="w-1/3 bg-white my-4" id="user__profile">
+				
+			</div>
+		</div>
+	</section>
+
+	<!-- TEMPLATES -->
+	<script type="text/html" id="get__message__template">
+		<div class="flex justify-start">
+			<div class="bg-blue-400 rounded-md text-white max-w-md w-fit px-4 py-2 mb-2 float-left -translate-y-6">
+			<p class="break-all">{{message}}</p>
+			<p class="text-xs text-end">{{createdAt}}</p>
+		</div>
+		</div>
+	</script>
+
+	<script type="text/html" id="send__message__template">
+		<div class="flex justify-end">
+			<div class="bg-gray-100 rounded-md text-gray-700 max-w-sm w-fit px-4 py-2 mb-2 translate-y-6" id="send__message">
+			<p class="break-all">{{message}}</p>
+			<p class="text-xs text-end">{{createdAt}}</p>
+		</div>
+		</div>
+	</script>
+
+	<script type="text/html" id="user__profile__template">
+		<div class="user__profile items-center text-center flex flex-col justify-center m-2 ">
+			<img src="/img/unknown.jpg" class="h-20 w-20 rounded-full">
+			<div class="user__details flex flex-col justify-between">
+				<h2 class="my-1">{{username}}</h2>
+				<h2 class=""><i class="bi bi-envelope"></i> {{email}}</h2>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/html" id="sidebar__template">
+		<h2 class="text-xl my-3 text-bold"> <i class="bi bi-people"></i> Friends </h2>
+		<br>
+		<ul class="overscroll-auto" class="friends">
+			{{#friends}}
+			<li class="py-3 border-b border-gray-100">
+				<i class="bi bi-person-circle"></i> {{username}}
+			</li>
+			{{/friends}}
+		</ul>
+	</script>
+
+	<script type="text/html" id="friend__profile__template">
+		<div class="flex justify-between bg-gray-100">
+			<div class="with__user flex flex-row px-3 py-2 items-center justify-left">
+				<img src="/img/unknown.jpg" class="h-12 w-12 rounded-full">
+				<h1 class="text-gray-700 inline-block align-middle font-semibold text-lg mx-3">{{username}}</h1>
+			</div>	
+			<i class="bi bi-three-dots-vertical my-auto mx-3"></i>
+		</div>		
+
+	</script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    
+	<script src="/scripts/chat.js"></script>
+</body>
+</html>

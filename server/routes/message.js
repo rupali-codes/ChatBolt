@@ -2,8 +2,12 @@ const express = require('express')
 const User = require('../models/user')
 const router = new express.Router()
 
-router.get('/msg', (req, res) => {
-	res.send("Hello World! message")
+router.post('/message/addMessage', (req, res) => {
+
+})
+
+router.post('message/getMessages', (req, res) => {
+
 })
 
 module.exports = router
