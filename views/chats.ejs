@@ -8,9 +8,23 @@
 	<!-- <%- include('partials/nav.ejs') %> -->
 	
 	<section class="">
-		<div class="flex md:flex-row flex-col h-screen">	
-			<div class="w-1/5 px-3 m-4" id="sidebar">
-				
+		<div class="flex md:flex-row flex-col h-screen">
+
+			<div class="sbar w-1/5 px-4  border-r">
+				<div class="flex my-3">
+					<h2 class="text-xl text-bold"> <i class="bi bi-people"></i> Friends </h2>
+					<!-- <button class="inline-flex text-bold text-blue-500 border-0 px-2 focus:outline-none hover:text-blue-900 text-xl rounded" id="" type="submit" title="add a friend"><i class="bi bi-person-plus"></i></button> -->
+				</div>
+				<form class="flex  md:justify-center justify-center items-center pb-4 none" id="add__friend__form" method="POST" action="/user/chats/addFriend">
+					        <div class="relative mr-1 lg:w-full w-full">
+					          <input type="text" name="username" class="w-full bg-white bg-opacity-50 border-b border-gray-400 focus:border-b-2  focus:bg-transparent focus:border-blue-400 text-sm outline-none text-gray-700 px-2 leading-8 transition-colors duration-200 ease-in-out text-center" placeholder="'usrename' " required autocomplete="off" id="username__input">
+					        </div>
+					   		<button class="inline-flex text-bold text-grey-700 border-0 px-2 focus:outline-none hover:text-blue-900 text-xl rounded" id="add__friend__btn" type="submit" title="add a friend"><i class="bi bi-person-plus"></i></button>
+						</form>
+
+				<div class="" id="sidebar">
+					
+				</div>
 			</div>
 			<div class="flex flex-col w-4/5 bg-grey-100">
 				<div id="friend__profile">
@@ -18,7 +32,9 @@
 				</div>
 				<div class="scroll-auto m-4 mt-5" id="chat__messages">
 					
-					<!-- <br> -->
+					<!-- <div class="flex justify-center">
+						<img src="/img/chat-3.jpg">
+					</div> -->
 					
 				</div>
 				<div class="message__form object-bottom">
@@ -31,7 +47,7 @@
 						</form>
 				</div>
 			</div>
-			<div class="w-1/3 bg-white my-4" id="user__profile">
+			<div class="w-1/4 bg-white my-4 border-l" id="user__profile">
 				
 			</div>
 		</div>
@@ -57,22 +73,25 @@
 	</script>
 
 	<script type="text/html" id="user__profile__template">
-		<div class="user__profile items-center text-center flex flex-col justify-center m-2 ">
+		<div class="user__profile items-center  flex flex-col justify-center m-2">
 			<img src="/img/unknown.jpg" class="h-20 w-20 rounded-full">
-			<div class="user__details flex flex-col justify-between">
-				<h2 class="my-1">{{username}}</h2>
+			<div class="user__details flex flex-col justify-between mt-2">
+				<h2 class=""><i class="bi bi-person"></i> {{name}}</h2>
+				<h2 class=""><i class="bi bi-at"></i> {{username}}</h2>
 				<h2 class=""><i class="bi bi-envelope"></i> {{email}}</h2>
 			</div>
 		</div>
 	</script>
 
 	<script type="text/html" id="sidebar__template">
-		<h2 class="text-xl my-3 text-bold"> <i class="bi bi-people"></i> Friends </h2>
 		<br>
 		<ul class="overscroll-auto" class="friends">
 			{{#friends}}
-			<li class="py-3 border-b border-gray-100">
-				<i class="bi bi-person-circle"></i> {{username}}
+			<li class="py-3 border-b border-gray-100" id="friend">
+				<span class="hidden" id="friendId">{{_id}}</span>
+				<!-- <a href=""> -->
+					<i class="bi bi-person-circle"></i> {{name}}
+				<!-- </a> -->
 			</li>
 			{{/friends}}
 		</ul>
@@ -82,7 +101,7 @@
 		<div class="flex justify-between bg-gray-100">
 			<div class="with__user flex flex-row px-3 py-2 items-center justify-left">
 				<img src="/img/unknown.jpg" class="h-12 w-12 rounded-full">
-				<h1 class="text-gray-700 inline-block align-middle font-semibold text-lg mx-3">{{username}}</h1>
+				<h1 class="text-gray-700 inline-block align-middle font-semibold text-lg mx-3">{{name}}</h1>
 			</div>	
 			<i class="bi bi-three-dots-vertical my-auto mx-3"></i>
 		</div>		

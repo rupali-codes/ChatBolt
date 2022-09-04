@@ -7,6 +7,7 @@ const ejs = require('ejs')
 const cookieParser = require('cookie-parser')
 const socketio = require('socket.io')
 const http = require('http')
+const { getUserById } = require('./utils/user')
 
 const publicDirPath = path.join(__dirname, '../public')
 const viewsDirPath = path.join(__dirname, '../views')
@@ -44,13 +45,28 @@ io.on('connection', (socket) => {
 	console.log("new websocket connection, ", socket.id)
 	// socket.on('join', (options, callback) => {
 	// 	console.log("join")
-		socket.on('sendMessage', (message, callback) => {
-			console.log("sendMessage")
-			console.log("message: ",message)
-			const msg = generateMessage(message)
-			socket.emit('sender', msg)
-			callback()
+		
+		socket.on('toFriend', async (id, callback) => {
+			const user = await getUserById(id)
+			console.log("USER: ", user)
+			socket.emit('to-friend-profile', {
+				_id: user._id,
+				name: user.name, 
+				username: user.username
+			})
+
+			socket.on('sendMessage', (message, callback) => {
+				console.log("sendMessage")
+				console.log("message: ",message)
+				const msg = generateMessage(message)
+				socket.emit('sender', msg)
+				socket.to(user)
+				callback()
+			})
+
 		})
+
+
 	// })
 })
 

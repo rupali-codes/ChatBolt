@@ -10,10 +10,13 @@ const chatMessages = document.querySelector('#chat__messages')
 const userProfile = document.querySelector('#user__profile')
 const sidebar = document.querySelector('#sidebar')
 const friendProfile = document.querySelector('#friend__profile')
+const friend = document.querySelector('#friend')
 
 const messageForm = document.querySelector('#message__form')
 const messageInput = document.querySelector('#message__input')
 const sendButton = document.querySelector('#send__message__btn')
+const addFriendForm = document.querySelector('#add__friend__form')
+const addFriendBtn = document.querySelector('#add__friend__btn')
 
 const autoscroll = () => {
 	const newMessage = chatMessages.lastElementChild
@@ -64,12 +67,12 @@ socket.on('friends-data', ({friends}) => {
 	sidebar.innerHTML = html
 })
 
-socket.on('user-profile', ({username}) => {
-	const html = Mustache.render(userProfileTemplate, {
-		username
+socket.on('to-friend-profile', (friend) => {
+	const html = Mustache.render(friendProfileTemplate, {
+		name: friend.name
 	})
 
-	userProfile.innerHTML = html
+	friendProfile.innerHTML = html
 })
 
 //custom events
@@ -90,4 +93,42 @@ sendButton.addEventListener('click', (e) => {
 	})
 
 	console.log('message', message)
+});
+
+( function() {
+	fetch('/user/chats/friends')
+	.then(res => res.json())
+	.then(friends => {
+		console.log(friends)
+		const html = Mustache.render(sidebarTemplate, {
+			friends
+		})
+
+		sidebar.innerHTML = html
+	})
+})();
+
+(function() {
+	fetch('/user/profile')
+	.then(res => res.json())
+	.then(user => {
+		const html = Mustache.render(userProfileTemplate, {
+			name: user.name.charAt(0).toUpperCase() + user.name.slice(1), 
+			username: user.username,
+			email: user.email
+		})
+
+		userProfile.innerHTML = html
+	})
+})();
+
+sidebar.addEventListener('click', (e) => {
+	const id = e.target.querySelector('#friendId').innerHTML
+	console.log(id)
+	socket.emit('toFriend', id, (error) => {
+		if(error) {
+			console.log("friend profile error, ", error)
+		}
+	})
+
 })

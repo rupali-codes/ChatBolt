@@ -1,16 +1,16 @@
 const User = require('../models/user')
 const verify = require('../authentication/verify')
 
-const getUser = async (id) => {
-	const user = await User.findById(id)
-	if(!user) return {
-		error: "user not found"
-	}
+const getUserById = async (id) => {
+	return await User.findById({_id: id})
+	// if(!user) return {
+	// 	error: "user not found"
+	// }
 
-	return user
+	// return user
 }
 
 
 module.exports = {
-	getUser
+	getUserById
 }

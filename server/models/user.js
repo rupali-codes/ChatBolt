@@ -19,6 +19,9 @@ const UserSchema = mongoose.Schema({
 		type: String,
 		minlength: 8
 	},
+	friends: [{
+		type: mongoose.Schema.Types.ObjectId
+	}],
 	tokens: [{
 		token: {
 			type: String, 
