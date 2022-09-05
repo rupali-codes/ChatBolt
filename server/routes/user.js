@@ -15,16 +15,16 @@ router.get('/signin', (req, res) => {
 	res.render('signin')
 })
 
-router.get('/user/chats', verify, (req, res) => {
-	res.render('chats')
-})
+// router.get('/user/chats', verify, (req, res) => {
+// 	res.render('chats')
+// })
 
 //creating user
 router.post('/user/signup', async (req, res) => {
 	try {
 		const user = new User(req.body)
 		const token = await user.generateJwtToken()
-
+ 
 		await user.save()
 		res.cookie("jwt", token)
 		res.status(200)
@@ -115,11 +115,14 @@ router.get('/user/chats/friends', verify,  async (req, res) => {
 		for (f of req.user.friends) {
 			const user = await User.findById(f)
 			allFrnds.push({
-				_id: user._id,
+				friendId: user._id,
+				friendSocketId: user.userSocketId,
 				name: user.name,
 				username: user.username
 			})
 		}
+
+		console.log(allFrnds)
  
 		res.send(allFrnds)
 	} catch(err) {
@@ -133,6 +136,8 @@ router.get('/user/chats/friends', verify,  async (req, res) => {
 router.get('/user/profile', verify, (req, res) => {
 	try {
 			const user = {
+				userId: req.user._id,
+				userSocketId: req.user.userSocketId,
 				name: req.user.name, 
 				username: req.user.username,
 				email: req.user.email

@@ -8,6 +8,9 @@ const cookieParser = require('cookie-parser')
 const socketio = require('socket.io')
 const http = require('http')
 const { getUserById } = require('./utils/user')
+const { generateMessage, getAllMessages } = require('./utils/message')
+const verify = require('./authentication/verify')
+const User = require('./models/user')
 
 const publicDirPath = path.join(__dirname, '../public')
 const viewsDirPath = path.join(__dirname, '../views')
@@ -34,40 +37,57 @@ app.use(cookieParser())
 const server = http.createServer(app)
 const io = socketio(server)
 
-const generateMessage = (text) => {
-	return {
-		text,  
-		createdAt: new Date().getTime()
-	}
-}
 
-io.on('connection', (socket) => {
+
+app.get('/user/chats', verify, (req, res) => {
+	res.render('chats')
+
+io.on('connection',  async (socket) => {
 	console.log("new websocket connection, ", socket.id)
-	// socket.on('join', (options, callback) => {
-	// 	console.log("join")
-		
+
+		req.user.userSocketId = socket.id
+		await req.user.save()
+
+		socket.on('sendMessage', async (message, callback) => {
+			console.log("sendMessage:, ")
+			
+			const msg = await generateMessage(req.user._id, req.user.userSocketId, message.friendId, message.friendSocketId, message.text)
+			// socket.emit('sender', msg)
+			console.log("message: ",msg)
+			socket.emit('sender', msg)
+
+			console.log(msg)
+
+			io.to(msg.recieverSocketId).emit('reciever', msg)
+			callback()
+		})
+
 		socket.on('toFriend', async (id, callback) => {
 			const user = await getUserById(id)
 			console.log("USER: ", user)
 			socket.emit('to-friend-profile', {
-				_id: user._id,
-				name: user.name, 
+				id: user._id,
+				name: user.name,
 				username: user.username
 			})
-
-			socket.on('sendMessage', (message, callback) => {
-				console.log("sendMessage")
-				console.log("message: ",message)
-				const msg = generateMessage(message)
-				socket.emit('sender', msg)
-				socket.to(user)
-				callback()
-			})
-
 		})
 
+		// *** to be continued
+		// socket.on('conv', ({sender, reciever}) => {
+		// 	const allConv = getAllMessages()
+
+		// 	console.log(allConv)
+		// 	for(msg of allConv) {
+		// 		if(msg.sender == sender) {
+		// 			socket.emit('sender', msg)
+		// 		} else  {
+		// 			socket.to()
+		// 		}
+		// 	}
+		// })
 
 	// })
+})
 })
 
 server.listen(port, () => {

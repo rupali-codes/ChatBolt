@@ -18,6 +18,7 @@ const sendButton = document.querySelector('#send__message__btn')
 const addFriendForm = document.querySelector('#add__friend__form')
 const addFriendBtn = document.querySelector('#add__friend__btn')
 
+
 const autoscroll = () => {
 	const newMessage = chatMessages.lastElementChild
 
@@ -76,26 +77,8 @@ socket.on('to-friend-profile', (friend) => {
 })
 
 //custom events
-sendButton.addEventListener('click', (e) => {
-	e.preventDefault()
-	const message = messageInput.value
-	// sendButton.setAttribute('disabled', 'disabled')
-	
 
-	socket.emit('sendMessage', message, (error) => {
-		sendButton.removeAttribute('disabled')
-		messageInput.value = ''
-		messageInput.focus()
-
-		if(error) {
-			console.log("could not send message: ", error)
-		}
-	})
-
-	console.log('message', message)
-});
-
-( function() {
+;( function() {
 	fetch('/user/chats/friends')
 	.then(res => res.json())
 	.then(friends => {
@@ -106,13 +89,15 @@ sendButton.addEventListener('click', (e) => {
 
 		sidebar.innerHTML = html
 	})
-})();
+})()
 
-(function() {
+;(function() {
 	fetch('/user/profile')
 	.then(res => res.json())
 	.then(user => {
 		const html = Mustache.render(userProfileTemplate, {
+			userId: user.userId,  
+			userSocketId: user.userSocketId,
 			name: user.name.charAt(0).toUpperCase() + user.name.slice(1), 
 			username: user.username,
 			email: user.email
@@ -120,12 +105,49 @@ sendButton.addEventListener('click', (e) => {
 
 		userProfile.innerHTML = html
 	})
-})();
+})()
 
 sidebar.addEventListener('click', (e) => {
-	const id = e.target.querySelector('#friendId').innerHTML
-	console.log(id)
-	socket.emit('toFriend', id, (error) => {
+	e.preventDefault()
+	const friendId = e.target.querySelector('#friendId').innerHTML
+	const friendSocketId = e.target.querySelector('#friendSocketId').innerHTML
+	const userId = document.querySelector('#userId').innerHTML
+	const userSocketId = document.querySelector('#userSocketId').innerHTML
+
+	// *** to be continued
+	// chatMessages.textContent = ''
+	// socket.emit('conv', ({sender: userId, reciever: friendId}), (error) => {
+	// 	if(error)
+	// 		console.log("conv error: ", error)
+	// })	
+
+	sendButton.addEventListener('click', (e) => {
+		e.preventDefault()
+		const message = {
+			text: messageInput.value,
+			userId,  
+			userSocketId,
+			friendId,
+			friendSocketId
+		}
+		// sendButton.setAttribute('disabled', 'disabled')
+		
+
+		socket.emit('sendMessage', message, (error) => {
+			// sendButton.removeAttribute('disabled')
+			messageInput.value = ''
+			messageInput.focus()
+
+			if(error) {
+				console.log("could not send message: ", error)
+			}
+		})
+
+		console.log('message', message)
+	});
+
+
+	socket.emit('toFriend', friendId, (error) => {
 		if(error) {
 			console.log("friend profile error, ", error)
 		}
