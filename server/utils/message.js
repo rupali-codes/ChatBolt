@@ -8,8 +8,6 @@ const generateMessage = async (senderId, senderSocketId, recieverId, recieverSoc
 			text
 		})
 
-		console.log("genMSg: ", msg)
-
 		await msg.save()
 		
 		return {
@@ -28,11 +26,16 @@ const generateMessage = async (senderId, senderSocketId, recieverId, recieverSoc
 	}
 }
 
-const getAllMessages = () => {
-	return Messages.find()
+const getAllMessages = async (sender) => {
+	try {
+		const messages = await Message.find({sender})
+		return messages
+	} catch(err) {
+		console.log("can not get messages, Error: ", err)
+	}
 }
 
 module.exports = {
-	generateMessage,
+	generateMessage, 
 	getAllMessages
-}
+} 

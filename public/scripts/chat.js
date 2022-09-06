@@ -40,6 +40,10 @@ const autoscroll = () => {
     }
 }
 
+socket.on('connect', () => {
+	console.log('conncted socket it: ', socket.id)
+})
+
 //socket.io events
 socket.on('reciever', (message) => {
 	console.log("We got message")
@@ -115,11 +119,11 @@ sidebar.addEventListener('click', (e) => {
 	const userSocketId = document.querySelector('#userSocketId').innerHTML
 
 	// *** to be continued
-	// chatMessages.textContent = ''
-	// socket.emit('conv', ({sender: userId, reciever: friendId}), (error) => {
-	// 	if(error)
-	// 		console.log("conv error: ", error)
-	// })	
+	chatMessages.textContent = ''
+	socket.emit('conv', ({sender: userId, reciever: friendId, recieverSocketId: friendSocketId}), (error) => {
+		if(error)
+			console.log("conv error: ", error)
+	})	
 
 	sendButton.addEventListener('click', (e) => {
 		e.preventDefault()

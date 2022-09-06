@@ -54,7 +54,7 @@ io.on('connection',  async (socket) => {
 			const msg = await generateMessage(req.user._id, req.user.userSocketId, message.friendId, message.friendSocketId, message.text)
 			// socket.emit('sender', msg)
 			console.log("message: ",msg)
-			socket.emit('sender', msg)
+			io.emit('sender', msg)
 
 			console.log(msg)
 
@@ -64,7 +64,7 @@ io.on('connection',  async (socket) => {
 
 		socket.on('toFriend', async (id, callback) => {
 			const user = await getUserById(id)
-			console.log("USER: ", user)
+			// console.log("USER: ", user)
 			socket.emit('to-friend-profile', {
 				id: user._id,
 				name: user.name,
@@ -73,22 +73,27 @@ io.on('connection',  async (socket) => {
 		})
 
 		// *** to be continued
-		// socket.on('conv', ({sender, reciever}) => {
-		// 	const allConv = getAllMessages()
+		socket.on('conv', async ({sender, reciever, recieverSocketId}) => {
+			const allConv = await getAllMessages(sender)
 
-		// 	console.log(allConv)
-		// 	for(msg of allConv) {
-		// 		if(msg.sender == sender) {
-		// 			socket.emit('sender', msg)
-		// 		} else  {
-		// 			socket.to()
-		// 		}
-		// 	}
-		// })
+			if(!allConv) {
+				console.log('no message found')
+			}
 
-	// })
+			// console.log("conv: ", allConv)
+			for(msg of allConv) {
+				console.log(msg.sender, sender)
+				if(msg.reciever	=== reciever) {
+					io.emit('sender', msg)
+				} else  { 
+					socket.broadcast.emit('reciever', msg) 
+				}
+			}
+		})
+  
+	// }) 
 })
-})
+})                     
 
 server.listen(port, () => {
 	console.log(`server running at port ${port}`)
