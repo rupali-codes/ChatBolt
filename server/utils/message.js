@@ -1,23 +1,15 @@
 const Message = require('../models/message')
 
-const generateMessage = async (senderId, senderSocketId, recieverId, recieverSocketId, text) => {
+const generateMessage = async (sender, reciever, text) => {
 	try {
 		const msg = new Message({
-			sender: senderId,
-			reciever: recieverId,
-			text
+			sender,
+			reciever,
+			text,
+			createdAt: new Date().getTime()
 		})
 
-		await msg.save()
-		
-		return {
-			senderId,
-			senderSocketId,
-			recieverId,
-			recieverSocketId,
-			text,  
-			createdAt: new Date().getTime()
-		}
+		return await msg.save() 
 	} catch(err) {
 		return {
 			msg: "can not generate message",

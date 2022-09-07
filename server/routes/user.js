@@ -115,8 +115,7 @@ router.get('/user/chats/friends', verify,  async (req, res) => {
 		for (f of req.user.friends) {
 			const user = await User.findById(f)
 			allFrnds.push({
-				friendId: user._id,
-				friendSocketId: user.userSocketId,
+				reciever: user._id,
 				name: user.name,
 				username: user.username
 			})

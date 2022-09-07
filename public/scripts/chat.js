@@ -10,7 +10,6 @@ const chatMessages = document.querySelector('#chat__messages')
 const userProfile = document.querySelector('#user__profile')
 const sidebar = document.querySelector('#sidebar')
 const friendProfile = document.querySelector('#friend__profile')
-const friend = document.querySelector('#friend')
 
 const messageForm = document.querySelector('#message__form')
 const messageInput = document.querySelector('#message__input')
@@ -113,14 +112,11 @@ socket.on('to-friend-profile', (friend) => {
 
 sidebar.addEventListener('click', (e) => {
 	e.preventDefault()
-	const friendId = e.target.querySelector('#friendId').innerHTML
-	const friendSocketId = e.target.querySelector('#friendSocketId').innerHTML
-	const userId = document.querySelector('#userId').innerHTML
-	const userSocketId = document.querySelector('#userSocketId').innerHTML
+	const reciever = e.target.querySelector('#reciever').innerHTML
+	const sender = document.querySelector('#sender').innerHTML
 
-	// *** to be continued
 	chatMessages.textContent = ''
-	socket.emit('conv', ({sender: userId, reciever: friendId, recieverSocketId: friendSocketId}), (error) => {
+	socket.emit('conv', ({sender, reciever}), (error) => {
 		if(error)
 			console.log("conv error: ", error)
 	})	
@@ -129,14 +125,10 @@ sidebar.addEventListener('click', (e) => {
 		e.preventDefault()
 		const message = {
 			text: messageInput.value,
-			userId,  
-			userSocketId,
-			friendId,
-			friendSocketId
+			sender,  
+			reciever
 		}
-		// sendButton.setAttribute('disabled', 'disabled')
 		
-
 		socket.emit('sendMessage', message, (error) => {
 			// sendButton.removeAttribute('disabled')
 			messageInput.value = ''
@@ -147,11 +139,10 @@ sidebar.addEventListener('click', (e) => {
 			}
 		})
 
-		console.log('message', message)
 	});
 
 
-	socket.emit('toFriend', friendId, (error) => {
+	socket.emit('toFriend', reciever, (error) => {
 		if(error) {
 			console.log("friend profile error, ", error)
 		}

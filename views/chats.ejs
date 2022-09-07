@@ -76,8 +76,7 @@
 		<div class="user__profile items-center  flex flex-col justify-center m-2">
 			<img src="/img/unknown.jpg" class="h-20 w-20 rounded-full">
 			<div class="user__details flex flex-col justify-between mt-2">
-				<span class="hidden" id="userId">{{userId}}</span>
-				<span class="hidden" id="userSocketId">{{userSocketId}}</span>
+				<span class="hidden" id="sender">{{userId}}</span>
 				<h2 class=""><i class="bi bi-person"></i> {{name}}</h2>
 				<h2 class=""><i class="bi bi-at"></i> {{username}}</h2>
 				<h2 class=""><i class="bi bi-envelope"></i> {{email}}</h2>
@@ -90,8 +89,7 @@
 		<ul class="overscroll-auto" class="friends">
 			{{#friends}}
 			<li class="py-3 border-b border-gray-100" id="friend">
-				<span class="hidden" id="friendId">{{friendId}}</span>
-				<span class="hidden" id="friendSocketId">{{friendSocketId}}</span>
+				<span class="hidden" id="reciever">{{reciever}}</span>
 				<!-- <a href=""> -->
 					<i class="bi bi-person-circle"></i> {{name}}
 				<!-- </a> -->
