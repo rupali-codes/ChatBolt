@@ -7,8 +7,8 @@ const ejs = require('ejs')
 const cookieParser = require('cookie-parser')
 const socketio = require('socket.io')
 const http = require('http')
-const { getUserById } = require('./utils/user')
-const { generateMessage, getAllMessages } = require('./utils/message')
+const { getUserById, getALLUsers } = require('./utils/user')
+const { generateMessage, setNewConv, getAllMessages } = require('./utils/message')
 const verify = require('./authentication/verify')
 const User = require('./models/user')
 
@@ -41,53 +41,37 @@ const io = socketio(server)
 
 app.get('/user/chats', verify, (req, res) => {
 	res.render('chats')
+})
 
-io.on('connect',  async (socket) => {
+io.on('connection',  async (socket) => {
 	console.log("new websocket connection, ", socket.id)
 
-		req.user.userSocketId = socket.id
-		await req.user.save()
-
+		// req.user.userSocketId = socket.id  
+		// await req.user.save()
+	
 		socket.on('sendMessage', async (message, callback) => {
-			console.log("sendMessage:, ")
+
+			console.log('sendMessage Called')
 
 			const msg = await generateMessage(message.sender, message.reciever, message.text)
 			const reciever = await getUserById(message.reciever)
-			console.log("message: ", msg)
-			console.log("reciever: ", reciever.username)
-			await socket.emit('sender', msg)
-			await socket.to(reciever.userSocketId).emit('reciever', msg)	
+			socket.emit('sender', msg)
 
-			// let msg = await generateMessage(req.user._id, req.user.userSocketId, message.friendId, message.friendSocketId, message.text)
-			// console.log("message: ",msg)
-			// // socket.emit('sender', msg)
+			if(reciever.userSocketId != socket.id) {
+				console.log("true")
+				socket.to(reciever.userSocketId).emit('reciever', msg)
+			} else {
+				console.log("false")
+				socket.to(reciever.userSocketId).emit('reciever', msg)
+			}
 
-			// let allConv = await getAllMessages(msg.senderId)
+			socket.broadcast.to(socket.id).emit('reciever', msg)
 
-			// if(!allConv) {
-			// 	console.log('no message found')
-			// }
-
-			// // console.log("conv: ", allConv)
-			// for(msg of allConv) {
-			// 	// console.log(msg.sender, sender)
-			// 	if(msg.reciever	=== msg.recieverId) {
-			// 		socket.emit('sender', msg)
-			// 	} else  { 
-			// 		socket.to(msg.recieverSocketId).emit('reciever', msg) 
-			// 	} 
-			// } 
-
-			// console.log(msg)
-
-			// socket.to(msg.recieverSocketId).emit('reciever', msg)
 			callback()
 		})
 
 		socket.on('toFriend', async (reciever, callback) => {
-			console.log("reciever ", reciever)
 			const user = await getUserById(reciever)
-			// console.log("USER: ", user)
 			socket.emit('to-friend-profile', {
 				id: user._id,
 				name: user.name,
@@ -95,28 +79,30 @@ io.on('connect',  async (socket) => {
 			})
 		})
 
-		// *** to be continued
-		socket.on('conv', async ({sender, reciever, recieverSocketId}) => {
-			const allConv = await getAllMessages(sender)
+		socket.on('conv', async ({sender, reciever}) => {
+			let allConv = await getAllMessages(sender)
+			const recieverSocketId = await getUserById(reciever).userSocketId
 
 			if(!allConv) {
 				console.log('no message found')
 			}
 
+			allConv = allConv.filter(msg => (msg.sender == sender && msg.reciever == reciever)
+			)
+
+			
+			console.log("length: ", allConv.length)
+
 			// console.log("conv: ", allConv)
-			for(msg of allConv) {
-				// console.log(msg.sender, sender)
-				if(msg.reciever	=== reciever) {
-					socket.emit('sender', msg)
-				} else  { 
-					socket.emit('reciever', msg) 
-				} 
-			} 
+			// for(msg of allConv) {
+			// 	console.log(msg)
+			// } 
+		
 		})
   
 	// }) 
 })
-})                     
+// })                     
 
 server.listen(port, () => {
 	console.log(`server running at port ${port}`)

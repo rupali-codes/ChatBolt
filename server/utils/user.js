@@ -5,7 +5,9 @@ const getUserById = async (reciever) => {
 	return await User.findById({_id: reciever})
 }
 
+const getALLUsers = async () => await User.find()
 
 module.exports = {
-	getUserById
+	getUserById,
+	getALLUsers
 }

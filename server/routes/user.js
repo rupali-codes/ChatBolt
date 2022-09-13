@@ -121,8 +121,6 @@ router.get('/user/chats/friends', verify,  async (req, res) => {
 			})
 		}
 
-		console.log(allFrnds)
- 
 		res.send(allFrnds)
 	} catch(err) {
 		res.send({

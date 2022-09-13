@@ -128,6 +128,8 @@ sidebar.addEventListener('click', (e) => {
 			sender,  
 			reciever
 		}
+
+		console.log("Button clicked")
 		
 		socket.emit('sendMessage', message, (error) => {
 			// sendButton.removeAttribute('disabled')
