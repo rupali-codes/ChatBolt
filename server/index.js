@@ -46,15 +46,21 @@ app.get('/user/chats', verify, (req, res) => {
 io.on('connection',  async (socket) => {
 	console.log("new websocket connection, ", socket.id)
 
-		// req.user.userSocketId = socket.id  
-		// await req.user.save()
+		socket.on('join', async (currentUserId, callback) => {
+			const currentUser = await getUserById(currentUserId)
+			console.log("current user: ", currentUser.name, socket.id)
+
+			currentUser.userSocketId = socket.id
+			await currentUser.save()
+			callback()
+		})
 	
 		socket.on('sendMessage', async (message, callback) => {
 
 			console.log('sendMessage Called')
 
-			const msg = await generateMessage(message.sender, message.reciever, message.text)
-			const reciever = await getUserById(message.reciever)
+			const msg = await generateMessage(message.senderId, message.recieverId, message.text)
+			const reciever = await getUserById(message.recieverId)
 			socket.emit('sender', msg)
 
 			if(reciever.userSocketId != socket.id) {
@@ -79,30 +85,31 @@ io.on('connection',  async (socket) => {
 			})
 		})
 
-		socket.on('conv', async ({sender, reciever}) => {
-			let allConv = await getAllMessages(sender)
-			const recieverSocketId = await getUserById(reciever).userSocketId
+		socket.on('conv', async ({senderId, recieverId}) => {
+			let allConv = await getAllMessages(senderId)
+			const currentUser = await getUserById(senderId)
+			const reciever = await getUserById(recieverId)
 
 			if(!allConv) {
 				console.log('no message found')
 			}
 
-			allConv = allConv.filter(msg => (msg.sender == sender && msg.reciever == reciever)
-			)
-
-			
 			console.log("length: ", allConv.length)
 
-			// console.log("conv: ", allConv)
-			// for(msg of allConv) {
-			// 	console.log(msg)
-			// } 
+			console.log("conv: ", allConv)
+			for(msg of allConv) {
+				if(msg.sender == senderId) {
+					socket.to(currentUser.userSocketId).emit('sender', msg)
+					socket.to(reciever.userSocketId).emit('reciever', msg)	
+				} else {
+					socket.to(currentUser.userSocketId).emit('reciever', msg)
+					socket.to(reciever.userSocketId).emit('sender', msg)
+				}
+			}
 		
 		})
   
-	// }) 
 })
-// })                     
 
 server.listen(port, () => {
 	console.log(`server running at port ${port}`)

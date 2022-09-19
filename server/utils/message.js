@@ -10,8 +10,7 @@ const generateMessage = async (sender, reciever, text) => {
 			createdAt: new Date().getTime()
 		})
 
-		// return await msg.save() 
-		return msg
+		return await msg.save() 
 	} catch(err) {
 		return {
 			msg: "can not generate message",
@@ -39,7 +38,7 @@ const setNewConv = async (member1, member2, message) => {
 
 const getAllMessages = async (sender) => {
 	try {
-		const messages = await Message.find({sender})
+		const messages = await Message.find()
 		return messages
 	} catch(err) {
 		console.log("can not get messages, Error: ", err)

@@ -105,6 +105,10 @@ socket.on('to-friend-profile', (friend) => {
 			username: user.username,
 			email: user.email
 		})
+ 
+		socket.emit('join', user.userId, (err) => {
+			if(err) console.log(err)
+		})
 
 		userProfile.innerHTML = html
 	})
@@ -112,11 +116,11 @@ socket.on('to-friend-profile', (friend) => {
 
 sidebar.addEventListener('click', (e) => {
 	e.preventDefault()
-	const reciever = e.target.querySelector('#reciever').innerHTML
-	const sender = document.querySelector('#sender').innerHTML
+	const recieverId = e.target.querySelector('#reciever').innerHTML
+	const senderId = document.querySelector('#sender').innerHTML
 
 	chatMessages.textContent = ''
-	socket.emit('conv', ({sender, reciever}), (error) => {
+	socket.emit('conv', ({senderId, recieverId}), (error) => {
 		if(error)
 			console.log("conv error: ", error)
 	})	
@@ -125,8 +129,8 @@ sidebar.addEventListener('click', (e) => {
 		e.preventDefault()
 		const message = {
 			text: messageInput.value,
-			sender,  
-			reciever
+			senderId,  
+			recieverId
 		}
 
 		console.log("Button clicked")
@@ -144,10 +148,10 @@ sidebar.addEventListener('click', (e) => {
 	});
 
 
-	socket.emit('toFriend', reciever, (error) => {
+	socket.emit('toFriend', recieverId, (error) => {
 		if(error) {
 			console.log("friend profile error, ", error)
 		}
 	})
 
-})
+})  
