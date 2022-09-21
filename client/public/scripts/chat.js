@@ -120,10 +120,13 @@ sidebar.addEventListener('click', (e) => {
 	const senderId = document.querySelector('#sender').innerHTML
 
 	chatMessages.textContent = ''
-	socket.emit('conv', ({senderId, recieverId}), (error) => {
-		if(error)
-			console.log("conv error: ", error)
-	})	
+
+
+
+	// socket.emit('conv', ({senderId, recieverId}), (error) => {
+	// // 	if(error)
+	// // 		console.log("conv error: ", error)
+	// })	
 
 	sendButton.addEventListener('click', (e) => {
 		e.preventDefault()
@@ -148,7 +151,7 @@ sidebar.addEventListener('click', (e) => {
 	});
 
 
-	socket.emit('toFriend', recieverId, (error) => {
+	socket.emit('toFriend', ({senderId, recieverId}), (error) => {
 		if(error) {
 			console.log("friend profile error, ", error)
 		}
