@@ -15,9 +15,14 @@ router.get('/signin', (req, res) => {
 	res.render('signin')
 })
 
-// router.get('/user/chats', verify, (req, res) => {
-// 	res.render('chats')
+// router.get('/error', (req, res) => {
+// 	res.render('error', {
+// 			status: 400,
+// 			msg: 'Unable to create account',
+// 			error: 'uncaught error'
+// 		})
 // })
+
 
 //creating user
 router.post('/user/signup', async (req, res) => {
@@ -30,9 +35,12 @@ router.post('/user/signup', async (req, res) => {
 		res.status(200)
 		res.redirect('chats')
 	} catch(err) {
-		res.status(400).send({
-			msg: "unable to create account",
+		res.render('error', {
+			status: 400,
+			msg: 'Unable to create account',
+			error: err.message
 		})
+
 	}
 })
 
@@ -48,8 +56,10 @@ router.post('/user/signin', async (req, res) => {
 		res.status(200)
 		res.redirect('chats')
 	} catch (err) {
-		res.status(400).send({
-			msg: "user not found",
+		res.render('error', {
+			status: 400,
+			msg: 'User not found',
+			error: err.message
 		})
 	}
 })
@@ -68,24 +78,27 @@ router.patch('/user/updateProfile', verify, async (req, res) => {
 			msg: "user updated successfully"
 		})
 	} catch (err) {
-		res.status(400).send({
-			msg: "can not modify user profile"
+		res.render('error', {
+			status: 400,
+			msg: 'Can not update user profile',
+			error: err.message
 		})
 	}
 })
 
 //logging out
-router.delete('/user/signout', verify, async(req, res) => {
+router.post('/user/signout', verify, async(req, res) => {
 	try {
 		req.user.tokens = req.user.tokens.filter(token => token.token !== req.token)
 
 		await req.user.save()
-		res.status(200).send({
-			msg: "user signed out successfully"
-		})
+		res.status(200).redirect('/')
+
 	} catch(err) {
-		res.status(404).send({
-			msg: "something went wrong"
+		res.render('error', {
+			status: 400,
+			msg: 'Something went wrong',
+			error: err.message
 		})
 	} 
 })
@@ -102,9 +115,10 @@ router.post('/user/chats/addFriend', verify, async (req, res) => {
 		await req.user.save()
 		res.redirect('/user/chats')
 	} catch(err) {
-		res.status(404).send({
-			msg: "could not add friend",
-			err
+		res.render('error', {
+			status: 404,
+			msg: 'Friend not found',
+			error: err.message
 		})
 	}
 })
@@ -123,11 +137,11 @@ router.get('/user/chats/friends', verify,  async (req, res) => {
 
 		res.send(allFrnds)
 	} catch(err) {
-		res.send({
-			msg: "can not get friends",
-			err
-		})
-	}
+		res.render('error', {
+			status: 404,
+			msg: 'Unable to get friends',
+			error: err.message
+		})	}
 })
 
 router.get('/user/profile', verify, (req, res) => {
@@ -141,8 +155,10 @@ router.get('/user/profile', verify, (req, res) => {
 			}
 			res.send(user)
 	} catch (err) {
-		res.send({
-			msg: "can not get user profile"
+		res.render('error', {
+			status: 400,
+			msg: 'Unable to get user profile',
+			error: err.message
 		})
 	}
 })

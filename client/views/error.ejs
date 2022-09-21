@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include('partials/links.ejs') %>
+  <title>Sign in</title>
+</head>
+<body>
+  <%- include('partials/nav.ejs') %>
+ 
+  <div class="text-base mt-20 py-20 w-50">
+    <div class="container text-center">
+      <h1 class="font-bold  text-4xl text-red-500">ERROR <%- status %>!</h1>
+      <div class="my-4">
+        <h2 class="text-xl">
+          <%- msg %>
+        </h2>
+        <h2 class="text-xl">
+          <%- error %>
+        </h2>
+      </div>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html>
 <head>
 	<%- include('partials/links.ejs') %>
-	<title>rups-chat-app</title>
+	<title>Chats | ChatBolt</title>
 </head>
 <body>
 	<!-- <%- include('partials/nav.ejs') %> -->
@@ -13,7 +13,7 @@
 			<div class="sbar w-1/5 px-4  border-r">
 				<div class="flex my-3">
 					<h2 class="text-xl text-bold"> <i class="bi bi-people"></i> Friends </h2>
-					<!-- <button class="inline-flex text-bold text-blue-500 border-0 px-2 focus:outline-none hover:text-blue-900 text-xl rounded" id="" type="submit" title="add a friend"><i class="bi bi-person-plus"></i></button> -->
+				
 				</div>
 				<form class="flex  md:justify-center justify-center items-center pb-4 none" id="add__friend__form" method="POST" action="/user/chats/addFriend">
 					        <div class="relative mr-1 lg:w-full w-full">
@@ -77,9 +77,13 @@
 			<img src="/img/unknown.jpg" class="h-20 w-20 rounded-full">
 			<div class="user__details flex flex-col justify-between mt-2">
 				<span class="hidden" id="sender">{{userId}}</span>
-				<h2 class=""><i class="bi bi-person"></i> {{name}}</h2>
-				<h2 class=""><i class="bi bi-at"></i> {{username}}</h2>
-				<h2 class=""><i class="bi bi-envelope"></i> {{email}}</h2>
+				<h2 class="font-semibold mt-1"><i class="bi bi-person"></i> {{name}}</h2>
+				<h2 class="font-semibold mt-1"><i class="bi bi-at"></i> {{username}}</h2>
+				<h2 class="font-semibold mt-1"><i class="bi bi-envelope"></i> {{email}}</h2>
+
+				<form class="flex justify-center mt-5" method="POST" action="/user/signout">
+					<button class="inline-flex items-center bg-blue-600 text-white border-0 py-1 px-3 focus:outline-none hover:bg-blue-500 hover:text-white text-base mt-4 md:mt-0 mx-2 rounded-full shadow">Logout</button>
+				</form>
 			</div>
 		</div>
 	</script>
