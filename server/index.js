@@ -12,9 +12,9 @@ const { generateMessage, setNewConv, getAllMessages } = require('./utils/message
 const verify = require('./authentication/verify')
 const User = require('./models/user')
 
-const publicDirPath = path.join(__dirname, '..client/public')
-const viewsDirPath = path.join(__dirname, '..client/views')
-const partialsDirPath = path.join(__dirname, '..client/views/paritials')
+const publicDirPath = path.join(__dirname, '../client/public')
+const viewsDirPath = path.join(__dirname, '../client/views')
+const partialsDirPath = path.join(__dirname, '../client/views/paritials')
 
 const app = express()
 const port = process.env.PORT
@@ -63,54 +63,80 @@ io.on('connection',  async (socket) => {
 			const reciever = await getUserById(message.recieverId)
 			socket.emit('sender', msg)
 
-			if(reciever.userSocketId != socket.id) {
+			if(reciever.userSocketId != socket.id ) {
 				console.log("true")
 				socket.to(reciever.userSocketId).emit('reciever', msg)
-			} else {
-				console.log("false")
-				socket.to(reciever.userSocketId).emit('reciever', msg)
-			}
+			} 
+			// else {
+			// 	console.log("false")
+			// 	socket.to(reciever.userSocketId).emit('reciever', msg)
+			// }
 
 			socket.broadcast.to(socket.id).emit('reciever', msg)
 
 			callback()
 		})
 
-		socket.on('toFriend', async (reciever, callback) => {
-			const user = await getUserById(reciever)
-			socket.emit('to-friend-profile', {
-				id: user._id,
-				name: user.name,
-				username: user.username
-			})
-		})
-
-		socket.on('conv', async ({senderId, recieverId}) => {
-			let allConv = await getAllMessages(senderId)
-			const currentUser = await getUserById(senderId)
+		socket.on('toFriend', async ({senderId, recieverId}, callback) => {
 			const reciever = await getUserById(recieverId)
+			const currentUser = await getUserById(senderId)
+
+			console.log("curret: ", currentUser.userSocketId)
+			let allConv = await getAllMessages()
 
 			if(!allConv) {
 				console.log('no message found')
-			}
+			} 
 
-			console.log("length: ", allConv.length)
-
-			console.log("conv: ", allConv)
 			for(msg of allConv) {
-				if(msg.sender == senderId) {
-					socket.to(currentUser.userSocketId).emit('sender', msg)
-					socket.to(reciever.userSocketId).emit('reciever', msg)	
-				} else {
-					socket.to(currentUser.userSocketId).emit('reciever', msg)
-					socket.to(reciever.userSocketId).emit('sender', msg)
+				if(msg.sender == senderId && msg.reciever == recieverId) {
+					console.log('true')
+					socket.emit('sender', msg)
+					// socket.to(reciever.userSocketId).emit('reciever', msg)	
+				} 
+
+				if(msg.sender == recieverId && msg.reciever == senderId) {
+					console.log('false')
+					socket.emit('reciever', msg)
+					// socket.to(reciever.userSocketId).emit('sender', msg)
 				}
 			}
-		
+
+
+			socket.emit('to-friend-profile', {
+				id: reciever._id,
+				name: reciever.name,
+				username: reciever.username
+			})
+
+
+			callback()
 		})
+
+		// socket.on('conv', async ({senderId, recieverId}) => {
+		// 	console.log("conv called********************")
+		// 	// let allConv = await getAllMessages()
+		// 	// const currentUser = await getUserById(senderId)
+		// 	// const reciever = await getUserById(recieverId)
+
+		// 	// if(!allConv) {
+		// 	// 	console.log('no message found')
+		// 	// }
+
+		// 	// for(msg of allConv) {
+		// 	// 	if(msg.sender == senderId) {
+		// 	// 		socket.to(currentUser.userSocketId).emit('sender', msg)
+		// 	// 		socket.to(reciever.userSocketId).emit('reciever', msg)	
+		// 	// 	} else {
+		// 	// 		socket.to(currentUser.userSocketId).emit('reciever', msg)
+		// 	// 		socket.to(reciever.userSocketId).emit('sender', msg)
+		// 	// 	}
+		// 	// }
+		
+		// })
   
 })
 
 server.listen(port, () => {
 	console.log(`server running at port ${port}`)
-})
+}) 

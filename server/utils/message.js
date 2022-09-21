@@ -36,7 +36,7 @@ const setNewConv = async (member1, member2, message) => {
 	}
 }
 
-const getAllMessages = async (sender) => {
+const getAllMessages = async () => {
 	try {
 		const messages = await Message.find()
 		return messages
