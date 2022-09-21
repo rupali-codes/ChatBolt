@@ -12,9 +12,9 @@ const { generateMessage, setNewConv, getAllMessages } = require('./utils/message
 const verify = require('./authentication/verify')
 const User = require('./models/user')
 
-const publicDirPath = path.join(__dirname, '../public')
-const viewsDirPath = path.join(__dirname, '../views')
-const partialsDirPath = path.join(__dirname, '../views/paritials')
+const publicDirPath = path.join(__dirname, '..client/public')
+const viewsDirPath = path.join(__dirname, '..client/views')
+const partialsDirPath = path.join(__dirname, '..client/views/paritials')
 
 const app = express()
 const port = process.env.PORT
