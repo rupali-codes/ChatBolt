@@ -4,13 +4,22 @@
 	<%- include('partials/links.ejs') %>
 	<title>Chats | ChatBolt</title>
 </head>
+
+	<style type="text/css">
+		/*#chat__messages::-webkit-scrollbar {
+			background: gray;
+			color: red;
+		}*/
+	</style>
+
 <body>
 	<!-- <%- include('partials/nav.ejs') %> -->
+
+
 	
 	<section class="">
 		<div class="flex md:flex-row flex-col h-screen">
-
-			<div class="sbar w-1/5 px-4  border-r">
+			<div class="sbar w-1/5 shadow px-4 mt-4">
 				<div class="flex my-3">
 					<h2 class="text-xl text-bold"> <i class="bi bi-people"></i> Friends </h2>
 				
@@ -30,11 +39,11 @@
 				<div id="friend__profile">
 					
 				</div>
-				<div class="scroll-auto m-4 mt-5 pt-5" id="chat__messages">
+				<div class="overflow-auto mx-4 my-2 p-3 h-96" id="chat__messages">
 					
-					<!-- <div class="flex justify-center">
-						<img src="/img/chat-3.jpg">
-					</div> -->
+					<div class="flex justify-center mt-5 pt-5" id="chats__temp">
+						<img src="/img/chat-3.jpg" class="h-80 w-70">
+					</div>
 					
 				</div>
 				<div class="message__form object-bottom">
@@ -47,8 +56,33 @@
 						</form>
 				</div>
 			</div>
-			<div class="w-1/4 bg-white my-4 border-l" id="user__profile">
-				
+			<div class="w-1/4 shadow">
+				<div class="items-center  flex flex-col justify-center m-2 mt-4">
+					<img src="/img/unknown.jpg" class="h-24 w-24 rounded-full">
+					<i class="bi bi-pencil bg-blue-500 text-white text-bol rounded-full w-8 h-8 text-center border-4 border-white ml-16 -translate-y-8 cursor-pointer" title="Edit profile" id="edit__profile__btn"></i>
+					
+							<form method="POST" action="/user/updateProfile" class="flex flex-col justify-center mx-4 hidden" id="update__profile__form">
+							  <div class="relative mb-3">
+						        <label for="full-name" class="leading-7 text-sm text-gray-600">Name</label>
+						        <input type="text" id="full-name" name="name" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0.5 px-3 leading-8 transition-colors duration-200 ease-in-out">
+						      </div>
+						      <div class="relative mb-3">
+						        <label for="full-name" class="leading-7 text-sm text-gray-600">Username</label>
+						        <input type="text" id="full-name" name="username" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-0.5 px-3 leading-8 transition-colors duration-200 ease-in-out">
+						      </div>
+						      <button class="text-white bg-blue-600 border-0 py-2 px-4 focus:outline-none hover:bg-blue-500 rounded text-sm" type="submit" id="update__profile__btn">Update</button>
+							</form>
+
+					<div id="user__profile" class="">
+						
+					</div>
+
+					<div class="flex w-3/5 md:justify-center justify-center items-center pb-4 fixed bottom-0">
+		        <div class="flex my-5 cursor-pointer">
+					<img src="/img/chat-logo.png" class="h-6 w-6"> <span class="text-xl ml-3 object-bottom font-semibold ">ChatBolt</span>
+				</div>
+			</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -56,7 +90,7 @@
 	<!-- TEMPLATES -->
 	<script type="text/html" id="get__message__template">
 		<div class="flex justify-start">
-			<div class="bg-blue-400 rounded-md text-white max-w-md w-fit px-4 py-2 mb-2 float-left -translate-y-6">
+			<div class="bg-blue-400 rounded-md text-white max-w-md w-fit px-4 py-2 mb-2 float-left ">
 			<p class="break-all">{{message}}</p>
 			<p class="text-xs text-end">{{createdAt}}</p>
 		</div>
@@ -65,7 +99,7 @@
 
 	<script type="text/html" id="send__message__template">
 		<div class="flex justify-end">
-			<div class="bg-gray-100 rounded-md text-gray-700 max-w-sm w-fit px-4 py-2 mb-2 translate-y-6" id="send__message">
+			<div class="bg-gray-100 rounded-md text-gray-700 max-w-sm w-fit px-4 py-2 mb-2 " id="send__message">
 			<p class="break-all">{{message}}</p>
 			<p class="text-xs text-end">{{createdAt}}</p>
 		</div>
@@ -73,18 +107,32 @@
 	</script>
 
 	<script type="text/html" id="user__profile__template">
-		<div class="user__profile items-center  flex flex-col justify-center m-2">
-			<img src="/img/unknown.jpg" class="h-20 w-20 rounded-full">
-			<div class="user__details flex flex-col justify-between mt-2">
-				<span class="hidden" id="sender">{{userId}}</span>
-				<h2 class="font-semibold mt-1"><i class="bi bi-person"></i> {{name}}</h2>
-				<h2 class="font-semibold mt-1"><i class="bi bi-at"></i> {{username}}</h2>
-				<h2 class="font-semibold mt-1"><i class="bi bi-envelope"></i> {{email}}</h2>
+
+		<div class="user__profile ">
+			
+
+
+			<div class="flex flex-col justify-between mt-2" id="user__details">				
+					<div class="px-3 py-1 border-b mt-2">
+						<span class="hidden" id="sender">{{userId}}</span>
+						<h6 class="text-sm text-gray-400">Name</h6>
+						<span class="text-base text-dark">{{name}}</span>
+					</div>
+					<div class="px-3 py-1 border-b mt-2">
+						<h6 class="text-sm text-gray-400">Username</h6>
+						<span class="text-base text-dark">{{username}}</span>
+					</div>
+					<div class="px-3 py-1 border-b mt-2">
+						<h6 class="text-sm text-gray-400">Email</h6>
+						<span class="text-base text-dark">{{email}}</span>
+					</div>
 
 				<form class="flex justify-center mt-5" method="POST" action="/user/signout">
-					<button class="inline-flex items-center bg-blue-600 text-white border-0 py-1 px-3 focus:outline-none hover:bg-blue-500 hover:text-white text-base mt-4 md:mt-0 mx-2 rounded-full shadow">Logout</button>
-				</form>
+					<button class="inline-flex items-center bg-blue-500 text-white border-0 py-1 px-3 focus:outline-none hover:bg-blue-600 hover:text-white text-base mt-4 md:mt-0 mx-2 rounded-full shadow">Logout</button>
+				</form> 
 			</div>
+			
+			
 		</div>
 	</script>
 
@@ -94,9 +142,7 @@
 			{{#friends}}
 			<li class="py-3 border-b border-gray-100" id="friend">
 				<span class="hidden" id="reciever">{{reciever}}</span>
-				<!-- <a href=""> -->
 					<i class="bi bi-person-circle"></i> {{name}}
-				<!-- </a> -->
 			</li>
 			{{/friends}}
 		</ul>
@@ -104,11 +150,25 @@
 
 	<script type="text/html" id="friend__profile__template">
 		<div class="flex justify-between bg-gray-100">
+			
 			<div class="with__user flex flex-row px-3 py-2 items-center justify-left">
+				
+				<button class="my-auto mx-3" title="Back">
+					<i class="bi bi-arrow-left text-lg"></i>
+				</button>
+
 				<img src="/img/unknown.jpg" class="h-12 w-12 rounded-full">
-				<h1 class="text-gray-700 inline-block align-middle font-semibold text-lg mx-3">{{name}}</h1>
+				<div class="mx-3">
+					<h1 class="text-gray-700 inline-block align-middle font-semibold text-lg">{{name}}</h1>
+					<h4 class="text-sm text-gray-400">@{{username}}</h4>
+				</div>
+
 			</div>	
-			<i class="bi bi-three-dots-vertical my-auto mx-3"></i>
+			<form method="POST" action="">
+				<button class="my-auto mx-3" title="Remove friend" type="submit">
+					<i class="bi bi-archive-fill"></i>
+				</button>
+			</form>
 		</div>		
 
 	</script>
