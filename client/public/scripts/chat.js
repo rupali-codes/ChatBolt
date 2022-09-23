@@ -50,8 +50,8 @@ socket.on('connect', () => {
 
 //socket.io events
 socket.on('reciever', (message) => {
-	console.log("We got message")
 	const html = Mustache.render(getMessageTemplate, {
+		id: message._id,
 		message: message.text,
 		createdAt: moment(message.createdAt).format('h:mm a')
 	})
@@ -60,8 +60,8 @@ socket.on('reciever', (message) => {
 })
 
 socket.on('sender', (message) => {
-	console.log("we are about to send a message")
 	const html = Mustache.render(sendMessageTemplate, {
+		id: message._id,
 		message: message.text,
 		createdAt: moment(message.createdAt).format('h:mm a')
 	})
@@ -92,7 +92,6 @@ socket.on('to-friend-profile', (friend) => {
 	fetch('/user/chats/friends')
 	.then(res => res.json())
 	.then(friends => {
-		console.log(friends)
 		const html = Mustache.render(sidebarTemplate, {
 			friends
 		})
@@ -175,3 +174,15 @@ updateProfileBtn.addEventListener('click', (e) => {
 })
 
 
+//delete message
+chatMessages.addEventListener('click', (e) => {
+	const messageId = e.target.parentElement.querySelector('#sId').innerHTML
+	socket.emit('removeMessage', messageId, (error) => {
+		if(error) {
+			console.log("friend profile error, ", error)
+		}
+	})
+
+	window.location.reload(true)
+
+})

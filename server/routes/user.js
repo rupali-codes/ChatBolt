@@ -15,6 +15,11 @@ router.get('/signin', (req, res) => {
 	res.render('signin')
 })
 
+router.get('/user/chats', verify, (req, res) => {
+	res.render('chats')
+})
+
+
 // router.get('/error', (req, res) => {
 // 	res.render('error', {
 // 			status: 400,
@@ -54,7 +59,7 @@ router.post('/user/signin', async (req, res) => {
 
 		res.cookie("jwt", token)
 		res.status(200)
-		res.redirect('chats')
+		res.redirect('/user/chats')
 	} catch (err) {
 		res.render('error', {
 			status: 400,
@@ -74,7 +79,7 @@ router.post('/user/updateProfile', verify, async (req, res) => {
 		user.password = req.body.password ? req.body.password : user.password
 
 		await user.save()
-		res.redirect('chats')
+		res.redirect('/user/chats')
 	} catch (err) {
 		res.render('error', {
 			status: 400,
