@@ -35,37 +35,10 @@
       <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">What we <span class="text-blue-600">Provides</span> ? </h1>
       <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke farm-to-table. Franzen you probably haven't heard of them man bun deep jianbing selfies heirloom.</p>
     </div>
-    <div class="flex flex-wrap -m-4">
-      <div class="lg:w-1/3 sm:w-1/2 p-4">
-        <div class="flex relative">
-          <img alt="gallery" class="absolute inset-0 w-full h-full object-cover object-center" src="https://dummyimage.com/600x360">
-          <div class="px-8 py-10 relative z-10 w-full border-1 border-blue-600 bg-white opacity-0 hover:opacity-100">
-            <h2 class="tracking-widest text-sm title-font font-medium text-blue-500 mb-1">SECURE</h2>
-            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">Your security is our priority</h1>
-            <p class="leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo aliquip ex ea commodo.</p>
-          </div>
-        </div>
+    <div class="flex flex-wrap -m-4" id="our_services">
+      <div class="flex justify-center">
+        <img src="/img/loading.gif" class="w-24 w-24">
       </div>
-      <div class="lg:w-1/3 sm:w-1/2 p-4">
-        <div class="flex relative">
-          <img alt="gallery" class="absolute inset-0 w-full h-full object-cover object-center" src="https://dummyimage.com/601x361">
-          <div class="px-8 py-10 relative z-10 w-full border-1 border-blue-600 bg-white opacity-0 hover:opacity-100">
-            <h2 class="tracking-widest text-sm title-font font-medium text-blue-500 mb-1">FAST</h2>
-            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">Our app is as fast as light</h1>
-            <p class="leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo aliquip ex ea commodo.</p>
-          </div>
-        </div>
-      </div>
-      <div class="lg:w-1/3 sm:w-1/2 p-4">
-        <div class="flex relative">
-          <img alt="gallery" class="absolute inset-0 w-full h-full object-cover object-center" src="https://dummyimage.com/603x363">
-          <div class="px-8 py-10 relative z-10 w-full border-1 border-blue-600 bg-white opacity-0 hover:opacity-100">
-            <h2 class="tracking-widest text-sm title-font font-medium text-blue-500 mb-1">PRIVACY</h2>
-            <h1 class="title-font text-lg font-medium text-gray-900 mb-3">We care about your privacy</h1>
-            <p class="leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo aliquip ex ea commodo.</p>
-          </div>
-        </div>
-      </div>    
     </div>
   </div>
 </section>
@@ -96,13 +69,13 @@
 
 <!-- contact us -->
 <section class="bg-gray-100 text-gray-600 body-font relative" id="contact-us">
-  <div class="container px-5 py-24 mx-auto">
+  <div class="container px-5 pt-24 pb-6 mx-auto">
     <div class="flex flex-col text-center w-full mb-12">
       <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Having any issues? <span class="text-blue-600">Contact Us</span></h1>
       <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify.</p>
     </div>
-    <div class="lg:w-1/2 md:w-2/3 mx-auto">
-      <div class="flex flex-wrap -m-2">
+    <div class="lg:w-1/2 md:w-2/3 mx-auto" id="contact_form">
+      <form class="flex flex-wrap -m-2" >
         <div class="p-2 w-1/2">
           <div class="relative">
             <label for="name" class="leading-7 text-sm text-gray-600">Name</label>
@@ -127,11 +100,13 @@
         
         <%- include('partials/footer.ejs') %>
 
-      </div>
+      </form>
     </div>
   </div>
 </section>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<script src="/scripts/components.js"></script>
 </html>

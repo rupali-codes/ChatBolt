@@ -97,6 +97,7 @@
 	<script type="text/html" id="get__message__template">
 		<div class="flex justify-start">
 			<div class="bg-blue-400 rounded-md text-white max-w-md w-fit px-4 py-2 mb-2 float-left ">
+			<span class="hidden" id="gId">{{id}}</span>
 			<p class="break-all">{{message}}</p>
 			<p class="text-xs text-end">{{createdAt}}</p>
 		</div>
@@ -104,8 +105,9 @@
 	</script>
 
 	<script type="text/html" id="send__message__template">
-		<div class="flex justify-end">
+		<div class="flex justify-end cursor-pointer" title="Delete message">
 			<div class="bg-gray-100 rounded-md text-gray-700 max-w-sm w-fit px-4 py-2 mb-2 " id="send__message">
+			<span class="hidden" id="sId">{{id}}</span>
 			<p class="break-all">{{message}}</p>
 			<p class="text-xs text-end">{{createdAt}}</p>
 		</div>
@@ -146,7 +148,7 @@
 		<br>
 		<ul class="overscroll-auto" class="friends">
 			{{#friends}}
-			<li class="py-3 border-b border-gray-100" id="friend">
+			<li class="py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50" id="friend">
 				<span class="hidden" id="reciever">{{reciever}}</span>
 					<i class="bi bi-person-circle"></i> {{name}}
 			</li>

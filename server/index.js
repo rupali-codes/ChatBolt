@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser')
 const socketio = require('socket.io')
 const http = require('http')
 const { getUserById, getALLUsers } = require('./utils/user')
-const { generateMessage, setNewConv, getAllMessages } = require('./utils/message')
+const { generateMessage, deleteMessage, setNewConv, getAllMessages } = require('./utils/message')
 const verify = require('./authentication/verify')
 const User = require('./models/user')
 
@@ -37,10 +37,6 @@ app.use(cookieParser())
 const server = http.createServer(app)
 const io = socketio(server)
 
-app.get('/user/chats', verify, (req, res) => {
-	res.render('chats')
-})
-
 io.on('connection',  async (socket) => {
 	console.log("new websocket connection, ", socket.id)
 
@@ -65,10 +61,7 @@ io.on('connection',  async (socket) => {
 				console.log("true")
 				socket.to(reciever.userSocketId).emit('reciever', msg)
 			} 
-			// else {
-			// 	console.log("false")
-			// 	socket.to(reciever.userSocketId).emit('reciever', msg)
-			// }
+			
 
 			socket.broadcast.to(socket.id).emit('reciever', msg)
 
@@ -88,12 +81,10 @@ io.on('connection',  async (socket) => {
 
 			for(msg of allConv) {
 				if(msg.sender == senderId && msg.reciever == recieverId) {
-					console.log('true')
 					socket.emit('sender', msg)
 				} 
 
 				if(msg.sender == recieverId && msg.reciever == senderId) {
-					console.log('false')
 					socket.emit('reciever', msg)
 				}
 			}
@@ -106,6 +97,10 @@ io.on('connection',  async (socket) => {
 			})
 
 			callback()
+		})
+
+		socket.on('removeMessage', async (messageId, callback) => {
+			await deleteMessage(messageId)
 		})
   
 })

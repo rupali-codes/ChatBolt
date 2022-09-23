@@ -19,6 +19,19 @@ const generateMessage = async (sender, reciever, text) => {
 	}
 }
 
+const deleteMessage = async (msgId) => {
+	try {
+		await Message.findByIdAndDelete({_id: msgId})
+
+		await Message.save()
+	} catch (err) {
+		return {
+			msg: "can not delete message",
+			err: err.message
+		}
+	}
+}
+
 const setNewConv = async (member1, member2, message) => {
 	try {
 		const conv = new Conversation ({
@@ -47,6 +60,7 @@ const getAllMessages = async () => {
 
 module.exports = {
 	generateMessage, 
+	deleteMessage,
 	setNewConv,
 	getAllMessages
 } 
