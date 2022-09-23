@@ -6,10 +6,16 @@
 </head>
 
 	<style type="text/css">
-		/*#chat__messages::-webkit-scrollbar {
-			background: gray;
-			color: red;
-		}*/
+		/* Hide scrollbar for Chrome, Opera */
+		#chat__messages::-webkit-scrollbar {
+		    display: none;
+		}
+
+		/* Hide scrollbar for IE, Edge and Firefox */
+		#chat__messages {
+		    -ms-overflow-style: none;  /* IE and Edge */
+		    scrollbar-width: none;  /* Firefox */
+		}
 	</style>
 
 <body>
@@ -154,7 +160,7 @@
 			<div class="with__user flex flex-row px-3 py-2 items-center justify-left">
 				
 				<button class="my-auto mx-3" title="Back">
-					<i class="bi bi-arrow-left text-lg"></i>
+					<i class="bi bi-caret-left-fill text-lg"></i>
 				</button>
 
 				<img src="/img/unknown.jpg" class="h-12 w-12 rounded-full">
@@ -164,9 +170,10 @@
 				</div>
 
 			</div>	
-			<form method="POST" action="">
-				<button class="my-auto mx-3" title="Remove friend" type="submit">
-					<i class="bi bi-archive-fill"></i>
+			<form method="POST" action="/user/chats/removeFriend/{{id}}">
+
+				<button class="py-3 px-3" title="Remove friend" type="submit">
+					<i class="bi bi-trash"></i>
 				</button>
 			</form>
 		</div>		

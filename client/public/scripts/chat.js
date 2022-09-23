@@ -78,6 +78,7 @@ socket.on('friends-data', ({friends}) => {
 
 socket.on('to-friend-profile', (friend) => {
 	const html = Mustache.render(friendProfileTemplate, {
+		id: friend.id,
 		name:  friend.name.charAt(0).toUpperCase() + friend.name.slice(1),
 		username: friend.username
 	})
@@ -146,7 +147,7 @@ sidebar.addEventListener('click', (e) => {
 				console.log("could not send message: ", error)
 			}
 		})
-
+ 
 	});
 
 

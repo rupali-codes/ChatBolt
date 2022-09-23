@@ -104,7 +104,6 @@ router.post('/user/signout', verify, async(req, res) => {
 //adding a friend
 router.post('/user/chats/addFriend', verify, async (req, res) => {
 	try {
-		// const username = req.body.username
 		const user = await User.findOne({username: req.body.username})
 		if(!user) res.send({
 			msg: "user not found"
@@ -116,6 +115,25 @@ router.post('/user/chats/addFriend', verify, async (req, res) => {
 		res.render('error', {
 			status: 404,
 			msg: 'Friend not found',
+			error: err.message
+		})
+	}
+})
+
+//removing a friend
+router.post('/user/chats/removeFriend/:id', verify, async (req, res) => {
+	try {
+		const id = req.params.id
+		console.log("ID: ", id)
+ 
+	 	req.user.friends = req.user.friends.filter(frnd => frnd._id != id)
+	 	await req.user.save()
+
+	 	res.redirect('/user/chats')
+	} catch (err) {
+		res.render('error', {
+			status: 400,
+			msg: 'Could not remove friend',
 			error: err.message
 		})
 	}
