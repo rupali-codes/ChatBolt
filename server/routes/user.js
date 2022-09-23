@@ -104,7 +104,6 @@ router.post('/user/signout', verify, async(req, res) => {
 //adding a friend
 router.post('/user/chats/addFriend', verify, async (req, res) => {
 	try {
-		// const username = req.body.username
 		const user = await User.findOne({username: req.body.username})
 		if(!user) res.send({
 			msg: "user not found"
@@ -121,6 +120,7 @@ router.post('/user/chats/addFriend', verify, async (req, res) => {
 	}
 })
 
+//removing a friend
 router.post('/user/chats/removeFriend/:id', verify, async (req, res) => {
 	try {
 		const id = req.params.id
