@@ -65,7 +65,7 @@ router.post('/user/signin', async (req, res) => {
 })
 
 //updating user profile
-router.patch('/user/updateProfile', verify, async (req, res) => {
+router.post('/user/updateProfile', verify, async (req, res) => {
 	try {
 		const user = req.user 
 		user.name = req.body.name ? req.body.name : user.name
@@ -74,9 +74,7 @@ router.patch('/user/updateProfile', verify, async (req, res) => {
 		user.password = req.body.password ? req.body.password : user.password
 
 		await user.save()
-		res.status(200).send({
-			msg: "user updated successfully"
-		})
+		res.redirect('chats')
 	} catch (err) {
 		res.render('error', {
 			status: 400,
@@ -130,7 +128,7 @@ router.get('/user/chats/friends', verify,  async (req, res) => {
 			const user = await User.findById(f)
 			allFrnds.push({
 				reciever: user._id,
-				name: user.name,
+				name:  user.name.charAt(0).toUpperCase() + user.name.slice(1),
 				username: user.username
 			})
 		}

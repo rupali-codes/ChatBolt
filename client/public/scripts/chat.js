@@ -10,12 +10,17 @@ const chatMessages = document.querySelector('#chat__messages')
 const userProfile = document.querySelector('#user__profile')
 const sidebar = document.querySelector('#sidebar')
 const friendProfile = document.querySelector('#friend__profile')
+const chatsTemp = document.querySelector('#chats__temp')
+const userDetails = document.querySelector('#user__details')
 
+const updateProfileForm = document.querySelector('#update__profile__form')
 const messageForm = document.querySelector('#message__form')
 const messageInput = document.querySelector('#message__input')
 const sendButton = document.querySelector('#send__message__btn')
 const addFriendForm = document.querySelector('#add__friend__form')
 const addFriendBtn = document.querySelector('#add__friend__btn')
+const editProfileBtn = document.querySelector('#edit__profile__btn')
+const updateProfileBtn = document.querySelector('#update__profile__btn')
 
 
 const autoscroll = () => {
@@ -73,7 +78,8 @@ socket.on('friends-data', ({friends}) => {
 
 socket.on('to-friend-profile', (friend) => {
 	const html = Mustache.render(friendProfileTemplate, {
-		name: friend.name
+		name:  friend.name.charAt(0).toUpperCase() + friend.name.slice(1),
+		username: friend.username
 	})
 
 	friendProfile.innerHTML = html
@@ -119,14 +125,9 @@ sidebar.addEventListener('click', (e) => {
 	const recieverId = e.target.querySelector('#reciever').innerHTML
 	const senderId = document.querySelector('#sender').innerHTML
 
-	chatMessages.textContent = ''
+	chatsTemp.classList.add('hidden')
 
-
-
-	// socket.emit('conv', ({senderId, recieverId}), (error) => {
-	// // 	if(error)
-	// // 		console.log("conv error: ", error)
-	// })	
+	chatMessages.textContent = ''	
 
 	sendButton.addEventListener('click', (e) => {
 		e.preventDefault()
@@ -135,8 +136,6 @@ sidebar.addEventListener('click', (e) => {
 			senderId,  
 			recieverId
 		}
-
-		console.log("Button clicked")
 		
 		socket.emit('sendMessage', message, (error) => {
 			// sendButton.removeAttribute('disabled')
@@ -158,3 +157,20 @@ sidebar.addEventListener('click', (e) => {
 	})
 
 })  
+
+editProfileBtn.addEventListener('click', (e) => {
+	e.preventDefault()
+
+	userProfile.classList.toggle('hidden')
+	updateProfileForm.classList.toggle('hidden')
+
+})
+
+updateProfileBtn.addEventListener('click', (e) => {
+
+	userProfile.classList.remove('hidden')
+	updateProfileForm.classList.add('hidden')
+
+})
+
+

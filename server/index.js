@@ -112,28 +112,6 @@ io.on('connection',  async (socket) => {
 
 			callback()
 		})
-
-		// socket.on('conv', async ({senderId, recieverId}) => {
-		// 	console.log("conv called********************")
-		// 	// let allConv = await getAllMessages()
-		// 	// const currentUser = await getUserById(senderId)
-		// 	// const reciever = await getUserById(recieverId)
-
-		// 	// if(!allConv) {
-		// 	// 	console.log('no message found')
-		// 	// }
-
-		// 	// for(msg of allConv) {
-		// 	// 	if(msg.sender == senderId) {
-		// 	// 		socket.to(currentUser.userSocketId).emit('sender', msg)
-		// 	// 		socket.to(reciever.userSocketId).emit('reciever', msg)	
-		// 	// 	} else {
-		// 	// 		socket.to(currentUser.userSocketId).emit('reciever', msg)
-		// 	// 		socket.to(reciever.userSocketId).emit('sender', msg)
-		// 	// 	}
-		// 	// }
-		
-		// })
   
 })
 
