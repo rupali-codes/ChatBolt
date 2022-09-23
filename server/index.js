@@ -37,8 +37,6 @@ app.use(cookieParser())
 const server = http.createServer(app)
 const io = socketio(server)
 
-
-
 app.get('/user/chats', verify, (req, res) => {
 	res.render('chats')
 })
@@ -92,13 +90,11 @@ io.on('connection',  async (socket) => {
 				if(msg.sender == senderId && msg.reciever == recieverId) {
 					console.log('true')
 					socket.emit('sender', msg)
-					// socket.to(reciever.userSocketId).emit('reciever', msg)	
 				} 
 
 				if(msg.sender == recieverId && msg.reciever == senderId) {
 					console.log('false')
 					socket.emit('reciever', msg)
-					// socket.to(reciever.userSocketId).emit('sender', msg)
 				}
 			}
 
@@ -108,7 +104,6 @@ io.on('connection',  async (socket) => {
 				name: reciever.name,
 				username: reciever.username
 			})
-
 
 			callback()
 		})
