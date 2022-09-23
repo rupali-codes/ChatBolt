@@ -121,6 +121,24 @@ router.post('/user/chats/addFriend', verify, async (req, res) => {
 	}
 })
 
+router.post('/user/chats/removeFriend/:id', verify, async (req, res) => {
+	try {
+		const id = req.params.id
+		console.log("ID: ", id)
+ 
+	 	req.user.friends = req.user.friends.filter(frnd => frnd._id != id)
+	 	await req.user.save()
+
+	 	res.redirect('/user/chats')
+	} catch (err) {
+		res.render('error', {
+			status: 400,
+			msg: 'Could not remove friend',
+			error: err.message
+		})
+	}
+})
+
 router.get('/user/chats/friends', verify,  async (req, res) => {
 	try {
 		let allFrnds = []
