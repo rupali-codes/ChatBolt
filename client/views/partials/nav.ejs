@@ -1,16 +1,20 @@
 <header class="text-gray-600 body-font bg-white fixed inset-x-0 top-0 h-20 z-50" id="home">
-    <div class=" mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center  container ">
-      <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-       <img src="img/chat-logo.png" class="h-8 w-8">
-        <span class="ml-3 text-xl text-blue-600">ChatBolt</span>
-      </a>
-      <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+    <div class=" mx-auto flex flex-wrap p-5 flex-col md:flex-row  container ">
+      <div class="flex justify-between">
+        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+         <img src="img/chat-logo.png" class="h-8 w-8">
+          <span class="ml-3 text-xl text-blue-600">ChatBolt</span>
+        </a>
+
+        <button class="inline-flex items-center text-white  bg-blue-600 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 text-base md:mt-0 mx-2  mb-4  rounded shadow lg:hidden md:hidden"><a href="/signup">Sign Up</a></button>
+      </div>
+      <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center hidden lg:block md:block">
         <a class="mr-5 hover:text-gray-900" href="http://127.0.0.1:3000/#home">Home</a>
         <a class="mr-5 hover:text-gray-900" href="http://127.0.0.1:3000/#about">About</a>
         <a class="mr-5 hover:text-gray-900" href="http://127.0.0.1:3000/#services">Our Services</a>
         <a class="mr-5 hover:text-gray-900" href="http://127.0.0.1:3000/#contact-us">Contact Us</a>
       </nav>
-      <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 text-base mt-4 md:mt-0 mx-2 rounded-full shadow"><a href="/signup">Sign Up</a></button>
-      <button class="inline-flex items-center text-white  bg-blue-600 border-0 py-1 px-3 focus:outline-none hover:bg-blue-500 text-base mt-4 md:mt-0 mx-2 rounded-full shadow"><a href="/signin">Sign In</a></button>
+      <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 text-base mt-4 md:mt-0 mx-2 rounded-full shadow hidden lg:block md:block"><a href="/signup">Sign Up</a></button>
+      <button class="inline-flex items-center text-white  bg-blue-600 border-0 py-1 px-3 focus:outline-none hover:bg-blue-500 text-base mt-4 md:mt-0 mx-2 rounded-full shadow hidden lg:block md:block"><a href="/signin">Sign In</a></button>
     </div>
   </header>
