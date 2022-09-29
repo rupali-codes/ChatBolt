@@ -22,6 +22,16 @@ const addFriendBtn = document.querySelector('#add__friend__btn')
 const editProfileBtn = document.querySelector('#edit__profile__btn')
 const updateProfileBtn = document.querySelector('#update__profile__btn')
 
+const mobUserProfile = document.querySelector('#mob__user__profile')
+const mobChat = document.querySelector('#mob__chat')
+const mobFriends = document.querySelector('#mob__friends')
+const sbarBtn = document.querySelector('#sbar__btn')
+const closeSbarBtn = document.querySelector('#close__sbar__btn')
+const closeUserProfileBtn = document.querySelector('#close__user__profile__btn')
+const closeFriendsBtn = document.querySelector('#close__friends__btn')
+const sbar = document.querySelector('#sbar')
+const toFriends = document.querySelector('#to__friends')
+const toUserProfile = document.querySelector('#to__user__profile')
 
 const autoscroll = () => {
 	const newMessage = chatMessages.lastElementChild
@@ -184,5 +194,62 @@ chatMessages.addEventListener('click', (e) => {
 	})
 
 	window.location.reload(true)
+
+})
+
+sbarBtn.addEventListener('click', (e) => {
+	e.preventDefault()
+
+	sbar.classList.remove('hidden')
+	sbarBtn.classList.add('hidden')
+	mobChat.classList.add('hidden')
+	closeSbarBtn.addEventListener('click', (e) => {
+		e.preventDefault()
+
+		mobChat.classList.remove('hidden')
+		sbar.classList.add('hidden')
+		sbarBtn.classList.remove('hidden')
+		mobUserProfile.classList.add('hidden')
+
+	})
+
+	toUserProfile.addEventListener('click', (e) => {
+		e.preventDefault()
+
+		mobUserProfile.classList.remove('hidden')
+		mobChat.classList.add('hidden')
+		sbarBtn.classList.remove('hidden')
+		sbar.classList.add('hidden')
+		mobFriends.classList.add('hidden')
+
+		closeUserProfileBtn.addEventListener('click', (e) => {
+			e.preventDefault()
+
+			mobChat.classList.remove('hidden')
+			sbar.classList.add('hidden')
+			sbarBtn.classList.remove('hidden')
+			mobUserProfile.classList.add('hidden')
+
+		})
+	})
+
+	toFriends.addEventListener('click', (e) => {
+		e.preventDefault()
+
+		mobFriends.classList.remove('hidden')
+		mobChat.classList.add('hidden')
+		sbarBtn.classList.remove('hidden')
+		sbar.classList.add('hidden')
+		mobUserProfile.classList.add('hidden')
+
+		closeFriendsBtn.addEventListener('click', (e) => {
+			e.preventDefault()
+
+			mobChat.classList.remove('hidden')
+			sbar.classList.add('hidden')
+			sbarBtn.classList.remove('hidden')
+			mobFriends.classList.add('hidden')
+		})
+	})
 
 })

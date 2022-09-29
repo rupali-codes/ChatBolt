@@ -19,13 +19,27 @@
 	</style>
 
 <body>
-	<!-- <%- include('partials/nav.ejs') %> -->
-
-
 	
 	<section class="">
 		<div class="flex md:flex-row flex-col h-screen">
-			<div class="sbar w-1/5 shadow px-4 mt-4">
+			<div class="lg:hidden md:hidden">
+				<div class="bg-gray-100 m-0 h-screen w-1/2 hidden" id="sbar">
+					<button class="text-lg w-full -mx-2 text-right" id="close__sbar__btn"><i class="bi bi-x-lg"></i></button>
+					 <div class="flex my-3 mx-3 cursor-pointer">
+						<img src="/img/chat-logo.png" class="h-5 w-5"> <span class="text-lg ml-3 object-bottom font-semibold ">ChatBolt</span>
+					</div>
+					<ul class="p-5">
+						<li class="py-3 border-b border-gray-200 cursor-pointer" id="to__friends">Friends</li>
+						<li class="py-3 border-b border-gray-200 cursor-pointer" id="to__user__profile">Profile</li>
+					</ul>
+					<button class="inline-flex items-center bg-blue-500 text-white border-0 py-1 px-2 focus:outline-none hover:bg-blue-600 hover:text-white text-sm mt-4 md:mt-0 mx-9 text-center rounded-full shadow">Logout</button>
+
+				</div>
+				<button class="m-5 text-lg" id="sbar__btn"><i class="bi bi-list"></i></button>
+			</div>
+
+			<div class="sbar lg:w-1/5 shadow px-4 hidden lg:block md:block" id="mob__friends">
+				<button class="lg:hidden md:hidden text-lg w-full -mx-2 text-right" id="close__friends__btn"><i class="bi bi-x-lg"></i></button>
 				<div class="flex my-3">
 					<h2 class="text-xl text-bold"> <i class="bi bi-people"></i> Friends </h2>
 				
@@ -41,7 +55,8 @@
 					
 				</div>
 			</div>
-			<div class="flex flex-col w-4/5 bg-grey-100">
+			
+			<div class="flex flex-col lg:w-4/5 bg-grey-100" id="mob__chat">
 				<div id="friend__profile">
 					
 				</div>
@@ -52,17 +67,19 @@
 					</div>
 					
 				</div>
-				<div class="message__form object-bottom">
-						 <form class="flex w-3/5 md:justify-center justify-center items-center pb-4 fixed bottom-0" id="message__form">
-					        <div class="relative mr-4 lg:w-full xl:w-1/2 w-2/4">
+				<div class="message__form object-bottom ">
+						 <form class="bg-white flex lg:w-3/5 md:3/5 md:justify-center justify-center items-center pb-4 fixed bottom-0" id="message__form">
+					        <div class="relative mr-2 lg:mr-4 lg:w-full xl:w-1/2 lg:w-2/4 md:w-2/4 mt-2 mx-2">
 					   
-					          <input type="text" name="message" class="w-full bg-gray-100 bg-opacity-50 border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out rounded-full" placeholder="Type a message..." required autocomplete="off" id="message__input">
+					          <input type="text" name="message" class="w-full bg-gray-100 bg-opacity-50 border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-700  px-3 leading-8 transition-colors duration-200 ease-in-out rounded-full my-2 py-0.5" placeholder="Type a message..." required autocomplete="off" id="message__input">
 					        </div>
 					        <button class="inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 text-sm rounded-full" id="send__message__btn" type="submit">send</button>
 						</form>
 				</div>
 			</div>
-			<div class="w-1/4 shadow">
+			<div class="lg:w-1/4 md:w-1/4 shadow hidden lg:block md:block" id="mob__user__profile">
+				<button class="lg:hidden md:hidden text-lg w-full -mx-2 text-right" id="close__user__profile__btn"><i class="bi bi-x-lg"></i></button>
+
 				<div class="items-center  flex flex-col justify-center m-2 mt-4">
 					<img src="/img/unknown.jpg" class="h-24 w-24 rounded-full">
 					<i class="bi bi-pencil bg-blue-500 text-white text-bol rounded-full w-8 h-8 text-center border-4 border-white ml-16 -translate-y-8 cursor-pointer" title="Edit profile" id="edit__profile__btn"></i>
@@ -83,11 +100,11 @@
 						
 					</div>
 
-					<div class="flex w-3/5 md:justify-center justify-center items-center pb-4 fixed bottom-0">
-		        <div class="flex my-5 cursor-pointer">
-					<img src="/img/chat-logo.png" class="h-6 w-6"> <span class="text-xl ml-3 object-bottom font-semibold ">ChatBolt</span>
-				</div>
-			</div>
+					<div class="flex md:justify-center justify-center items-center pb-4 fixed bottom-0 hidden lg:block md:block">
+				        <div class="flex my-5 cursor-pointer">
+							<img src="/img/chat-logo.png" class="h-6 w-6"> <span class="text-xl ml-3 object-bottom font-semibold ">ChatBolt</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
