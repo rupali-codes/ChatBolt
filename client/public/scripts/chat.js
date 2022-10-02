@@ -32,6 +32,7 @@ const closeFriendsBtn = document.querySelector('#close__friends__btn')
 const sbar = document.querySelector('#sbar')
 const toFriends = document.querySelector('#to__friends')
 const toUserProfile = document.querySelector('#to__user__profile')
+const userProfilePic = document.querySelector('#user__profile__pic')
 
 const autoscroll = () => {
 	const newMessage = chatMessages.lastElementChild
@@ -110,10 +111,15 @@ socket.on('to-friend-profile', (friend) => {
 	})
 })()
 
+const avatars = ['avatar-1', 'avatar-2', 'avatar-3', 'avatar-4', 'avatar-5', 'avatar-6', 'avatar-7', 'avatar-8', 'avatar-9']
+
+const randomNum = Math.floor(Math.random()*9) + 1
+
 ;(function() {
 	fetch('/user/profile')
 	.then(res => res.json())
 	.then(user => {
+
 		const html = Mustache.render(userProfileTemplate, {
 			userId: user.userId,  
 			userSocketId: user.userSocketId,
@@ -121,6 +127,10 @@ socket.on('to-friend-profile', (friend) => {
 			username: user.username,
 			email: user.email
 		})
+
+		console.log(randomNum)
+
+		userProfilePic.src = `/img/avatars/${avatars[randomNum]}.png`
  
 		socket.emit('join', user.userId, (err) => {
 			if(err) console.log(err)
